@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세 페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+</head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    a {
+        display: block;
+        box-sizing: border-box;
+        margin: 10px;
+    }
+</style>
+<body>
+    <div class="container-md">
+        <h1 th:text="${board.title}">제목입니다.</h1>
+        <p th:text="${board.content}">내용이 들어갈 부분입니다.</p>
+        <a class="btn btn-primary btn-sm"  th:href="@{/modify/{id}(id = ${board.id})}" role="button">수정</a>
+        <a class="btn btn-primary btn-sm"  th:href="@{/delete(id = ${board.id})}" role="button">삭제</a>
+    </div>
+</body>
+</html>

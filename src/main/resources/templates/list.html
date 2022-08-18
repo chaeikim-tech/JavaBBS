@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 리스트 페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+</head>
+
+<style>
+
+    .layout {
+        width : 500px;
+        margin : 0 auto;
+        margin-top : 40px;
+    }
+
+    #writeButton {
+        border: 2px solid black;
+        background-color: white;
+        border-color: #2196F3;
+        color: dodgerblue;
+        padding: 8px 15px;
+        font-size: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        box-sizing: border-box;
+    }
+
+    #searchForm {
+        display: flex;
+    }
+
+    #buttonContainer {
+        margin: 15px;
+    }
+
+</style>
+
+<body>
+
+    <div class="layout">
+        <!-- 검색 form -->
+        <form id="searchForm" action="/search" method="GET">
+            <div>
+                <input name="keyword" type="text" placeholder="검색어를 입력해주세요">
+            </div>
+            <button>검색하기</button>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>작성자</th>
+                    <th>작성시간</th>
+                    <th>조회 수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="board : ${list}">
+                    <td th:text="${board.id}">1</td>
+                    <td>
+                        <a th:text="${board.title}" th:href="@{/view(id=${board.id})}"></a>
+                    </td>
+                    <td>
+                        <a th:text="${board.content}" th:href="@{/view(id=${board.id})}"></a>
+                    </td>
+                    <td th:text="${board.name}">작성자</td>
+                    <td th:text="${board.createAt}">작성시간</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="buttonContainer" >
+            <a class="btn btn-primary" th:href="@{/write}" role="button">글쓰기</a>
+        </div>
+    </div>
+
+</body>
+</html>

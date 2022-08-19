@@ -1,10 +1,13 @@
 package com.board.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.board.entity.Board;
@@ -19,17 +22,23 @@ public class BoardService {
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
     }
+    
+    // 게시글 리스트 처리
+    /* public List<Board> boardList() {
+
+        return boardRepository.findAll();
+    } */
+    public Page<Board> boardList(Pageable pageable) {
+
+        return boardRepository.findAll(pageable);
+    }
 
     // 글 작성 처리
     public void write(Board board){
         boardRepository.save(board);
     }
 
-    // 게시글 리스트 처리
-    public List<Board> boardList() {
-
-        return boardRepository.findAll();
-    }
+    
 
     // 특정 게시글 삭제
 
@@ -41,7 +50,28 @@ public class BoardService {
     // 특정 게시글 불러오기
     public Board boardView(Long id) {
         return boardRepository.findById(id).get();
-    } 
+    }
 
-    
+    @Transactional
+    public List<Board> searchPost(String keyword) {
+        List<Board> boardEntities = boardRepository.findByTitleContaining(keyword);
+        List<Board> boardList = new ArrayList<>();
+
+        if(boardEntities.isEmpty()) return boardList;
+
+        for(Board boardEntity : boardEntities) {
+            boardList.add(this.convertEntityToDto(boardEntity));
+        }
+
+        return boardList;
+    }
+
+    private Board convertEntityToDto(Board boardEntity) {
+        return Board.builder()
+                .id(boardEntity.getId())
+                .name(boardEntity.getName())
+                .title(boardEntity.getTitle())
+                .content(boardEntity.getContent())
+                .build();
+    }
 }

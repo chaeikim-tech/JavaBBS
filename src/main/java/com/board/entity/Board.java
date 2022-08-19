@@ -1,5 +1,7 @@
 package com.board.entity;
 
+import java.util.Date;
+
 import javax.persistence.*;
 import lombok.*;
 
@@ -54,7 +56,8 @@ public class Board extends TimeStamp {
     public Board() {
 	}
     
-    public Board(Long id, String name, String title, String content,String writedate) {
+    @Builder
+    public Board(Long id, String name, String title, String content, Date createAt) {
         this.id = id;
         this.name = name;
         this.title = title;

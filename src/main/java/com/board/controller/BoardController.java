@@ -1,6 +1,12 @@
 package com.board.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +22,22 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("/")
-    public String boardList(Model model) {
-        model.addAttribute("list", boardService.boardList());
+    public String boardList(Model model,@PageableDefault(size= 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        
+        Page<Board> list = boardService.boardList(pageable);
+
+        int startPage = Math.max(1, list.getPageable().getPageNumber() - 4);
+        int endPage = Math.min(list.getTotalPages(), list.getPageable().getPageNumber() + 4);
+        
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("list", list);
+        //model.addAttribute("list", boardService.boardList(pageable));
         return "list";
+
+
+
     }
-
-    /* @GetMapping("/list")
-    public String boardList(Model model) {
-        model.addAttribute("list", boardService.boardList());
-
-        return "list";
-    } */
-
-    /* @GetMapping("/write") //localhost:8080/write
-    public String boardWriteForm() {
-        return "write";
-    } */
 
     @GetMapping("/write")
     public ModelAndView boardWriteForm(ModelAndView model) {
@@ -66,7 +72,7 @@ public class BoardController {
         return "modify";
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/modify/{id}")
     public String boardUpdate(@PathVariable("id") Long id, Board board)  {
 
         Board boardTemp = boardService.boardView(id);
@@ -79,9 +85,12 @@ public class BoardController {
 
     }
 
-    /* @GetMapping("/search")
+    @GetMapping("/search")
     public String boardSearch(@RequestParam(value = "keyword")String keyword, Model model) {
-        model.addAttribute("board", boardService.searchPost(keyword))
+        List<Board> boardList = boardService.searchPost(keyword);
+
+        System.out.println(boardList);
+        model.addAttribute("list", boardList);
         return "list";
-    } */
+    }
 }

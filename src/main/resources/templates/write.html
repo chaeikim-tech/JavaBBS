@@ -29,7 +29,10 @@
 <body>
     <div class="layout">
         <form action="/writepro" method="post" enctype="multipart/form-data">
-            <input name="title" type="text">
+            <label for="inputName">작성자 :</label>
+            <input type="text" id="inputName" name="name">
+            <label for="inputTitle">제목 :</label>
+            <input type="text" id="inputTitle" name="title">
             <textarea name="content"></textarea>
             <input type="file" name="file">
             <button type="submit">작성</button>

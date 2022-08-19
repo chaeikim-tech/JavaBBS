@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.board.entity.Board;
 import com.board.repository.BoardRepository;
 
+import org.thymeleaf.util.StringUtils;
+
 @Service
 public class BoardService {
 
@@ -28,9 +30,13 @@ public class BoardService {
 
         return boardRepository.findAll();
     } */
-    public Page<Board> boardList(Pageable pageable) {
+    public Page<Board> boardList(Pageable pageable,String searchText) {
 
-        return boardRepository.findAll(pageable);
+        if(StringUtils.isEmpty(searchText)){
+            return boardRepository.findAll(pageable);
+        } else {
+            return boardRepository.findByTitleContaining(pageable, searchText);
+        }
     }
 
     // 글 작성 처리
@@ -49,12 +55,13 @@ public class BoardService {
 
     // 특정 게시글 불러오기
     public Board boardView(Long id) {
+        //BoardRepository.updateView(id); //조회수
         return boardRepository.findById(id).get();
     }
 
-    @Transactional
+
+   /*  @Transactional
     public List<Board> searchPost(String keyword) {
-        List<Board> boardEntities = boardRepository.findByTitleContaining(keyword);
         List<Board> boardList = new ArrayList<>();
 
         if(boardEntities.isEmpty()) return boardList;
@@ -73,5 +80,5 @@ public class BoardService {
                 .title(boardEntity.getTitle())
                 .content(boardEntity.getContent())
                 .build();
-    }
+    } */
 }

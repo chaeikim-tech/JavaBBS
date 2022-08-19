@@ -22,9 +22,9 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("/")
-    public String boardList(Model model,@PageableDefault(size= 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String boardList(Model model,@PageableDefault(size= 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,@RequestParam(required = false, defaultValue = "") String searchText ) {
         
-        Page<Board> list = boardService.boardList(pageable);
+        Page <Board> list = boardService.boardList(pageable, searchText);
 
         int startPage = Math.max(1, list.getPageable().getPageNumber() - 4);
         int endPage = Math.min(list.getTotalPages(), list.getPageable().getPageNumber() + 4);
@@ -85,12 +85,12 @@ public class BoardController {
 
     }
 
-    @GetMapping("/search")
+    /* @GetMapping("/search")
     public String boardSearch(@RequestParam(value = "keyword")String keyword, Model model) {
         List<Board> boardList = boardService.searchPost(keyword);
 
         System.out.println(boardList);
         model.addAttribute("list", boardList);
         return "list";
-    }
+    } */
 }

@@ -19,6 +19,10 @@
         box-sizing: border-box;
         margin: 10px;
     }
+
+    main {
+        display: flex;
+    }
 </style>
 <body>
     <div class="container-md">
@@ -27,5 +31,24 @@
         <a class="btn btn-primary btn-sm"  th:href="@{/modify/{id}(id = ${board.id})}" role="button">수정</a>
         <a class="btn btn-primary btn-sm"  th:href="@{/delete(id = ${board.id})}" role="button">삭제</a>
     </div>
+    <main>
+        <div class="card mb-2 mt-5">
+            <div class="card-header bg-light">
+                <i class="fa fa-comment fa"></i> 댓글
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                        <button type="button" class="btn btn-dark mt-3">등록</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+
+    <br/>
+    
 </body>
 </html>

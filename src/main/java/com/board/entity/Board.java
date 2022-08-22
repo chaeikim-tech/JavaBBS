@@ -22,6 +22,11 @@ public class Board extends TimeStamp {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "view", columnDefinition = "integer default 0", nullable = false)
+    private Integer view;
+
+
+
 
     public Long getId() {
         return this.id;
@@ -52,16 +57,25 @@ public class Board extends TimeStamp {
         this.content = content;
     }
 
+    
+    public Integer getView() {
+        return this.view;
+    }
+
+    public void setView(Integer view) {
+        this.view = view;
+    }
 
     public Board() {
 	}
     
     @Builder
-    public Board(Long id, String name, String title, String content, Date createAt) {
+    public Board(Long id, String name, String title, String content, Date createAt, Integer view) {
         this.id = id;
         this.name = name;
         this.title = title;
         this.content = content;
+        this.view = view;
     }
 
 

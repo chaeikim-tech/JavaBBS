@@ -39,6 +39,21 @@ public class BoardService {
         }
     }
 
+    @Transactional
+    public void updateView(Long id) {
+        try{
+            Board board = boardRepository.findById(id).orElseThrow();
+            if(board.getView() == null) {
+                board.setView(0);
+            }
+            board.setView(board.getView()+1);
+            System.out.println(board);
+            return;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // 글 작성 처리
     public void write(Board board){
         boardRepository.save(board);
@@ -58,7 +73,6 @@ public class BoardService {
         //BoardRepository.updateView(id); //조회수
         return boardRepository.findById(id).get();
     }
-
 
    /*  @Transactional
     public List<Board> searchPost(String keyword) {

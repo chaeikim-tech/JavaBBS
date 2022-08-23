@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.entity.Board;
@@ -46,9 +47,9 @@ public class BoardController {
     }
 
     @PostMapping("/writepro")
-    public String boardWritePro(Board board) {
+    public String boardWritePro(Board board, MultipartFile file) throws Exception {
 
-        boardService.write(board);
+        boardService.write(board, file);
         return "redirect:/";
     }
 
@@ -73,13 +74,15 @@ public class BoardController {
     }
 
     @PostMapping("/modify/{id}")
-    public String boardUpdate(@PathVariable("id") Long id, Board board)  {
+    public String boardUpdate(@PathVariable("id") Long id, Board board,MultipartFile file) throws Exception  {
 
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
+        /* boardTemp.setFilename(board.getFilename());
+        boardTemp.setFilepath(board.getFilepath()); */
 
-        boardService.write(boardTemp);
+        boardService.write(boardTemp, file);
 
         return "redirect:/";
 

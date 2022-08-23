@@ -1,0 +1,24 @@
+1. 로그인 페이지 ( default/page-login.html )
+   - 계정
+2. DashBoard (apache echarts)
+
+3. 기관 정보 목록 Table (Sorting) - Create, Delete
+   
+   - Paging 처리 (10개, 15개, 20개 단위)
+   - Pagination 
+   - Search 기능 추가
+   - Add Form
+	1) 모달창 으로 폼 만들기
+	2) Add button
+   - Delete Form
+	2) 모달창 select 태그 전체리스트 불러오기
+	2) delete button
+
+모델 뷰 컨트롤러
+MVVM MVI MVP
+application 역할에 맞게 레이어 나눠서 한가지의 것이 한가지 역할을 갖도록
+
+
+네트워크 통신하는 클래스 => dependecy injection 
+mock 클래스 
+service => 네트워크 하는 js파일

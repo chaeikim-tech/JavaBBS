@@ -22,8 +22,14 @@ public class Board extends TimeStamp {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "view", columnDefinition = "integer default 0", nullable = false)
+    @Column(name = "view", columnDefinition = "integer default 0", nullable = true)
     private Integer view;
+
+    @Column(name = "filename")
+    private String filename;
+
+    @Column(name = "filepath")
+    private String filepath;
 
 
 

@@ -1,14 +1,19 @@
 package com.board.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.board.entity.Board;
 import com.board.repository.BoardRepository;
@@ -55,7 +60,19 @@ public class BoardService {
     }
 
     // 글 작성 처리
-    public void write(Board board){
+    public void write(Board board, MultipartFile file) throws Exception{
+        String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\files";
+
+        //랜덤으로 파일 이름 만들어줌.
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + "_" + file.getOriginalFilename();
+
+        File saveFile = new File(projectPath, fileName);
+        file.transferTo(saveFile);
+
+        board.setFilename(fileName);
+        board.setFilepath("/files/"+fileName);
+
         boardRepository.save(board);
     }
 
@@ -73,6 +90,7 @@ public class BoardService {
         //BoardRepository.updateView(id); //조회수
         return boardRepository.findById(id).get();
     }
+
 
    /*  @Transactional
     public List<Board> searchPost(String keyword) {

@@ -28,10 +28,11 @@
     <div class="container-md">
         <h1 th:text="${board.title}">제목입니다.</h1>
         <p th:text="${board.content}">내용이 들어갈 부분입니다.</p>
+        <a th:href="@{${board.filepath}}">다운로드</a>
         <a class="btn btn-primary btn-sm"  th:href="@{/modify/{id}(id = ${board.id})}" role="button">수정</a>
         <a class="btn btn-primary btn-sm"  th:href="@{/delete(id = ${board.id})}" role="button">삭제</a>
     </div>
-    <main>
+    <!-- <main>
         <div class="card mb-2 mt-5">
             <div class="card-header bg-light">
                 <i class="fa fa-comment fa"></i> 댓글
@@ -45,7 +46,7 @@
                 </ul>
             </div>
         </div>
-    </main>
+    </main> -->
 
 
     <br/>

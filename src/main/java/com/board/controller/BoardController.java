@@ -1,6 +1,9 @@
 package com.board.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +28,7 @@ public class BoardController {
     @GetMapping("/")
     public String boardList(Model model,@PageableDefault(size= 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,@RequestParam(required = false, defaultValue = "") String searchText ) {
         
-        Page <Board> list = boardService.boardList(pageable, searchText);
+        Page <Board> list = boardService.boardList(searchText, searchText, pageable);
 
         int startPage = Math.max(1, list.getPageable().getPageNumber() - 4);
         int endPage = Math.min(list.getTotalPages(), list.getPageable().getPageNumber() + 4);
@@ -87,13 +90,20 @@ public class BoardController {
         return "redirect:/";
 
     }
-
-    /* @GetMapping("/search")
-    public String boardSearch(@RequestParam(value = "keyword")String keyword, Model model) {
-        List<Board> boardList = boardService.searchPost(keyword);
-
-        System.out.println(boardList);
-        model.addAttribute("list", boardList);
-        return "list";
+/* 
+    // 좋아요
+    @PostMapping("/like")
+    public Integer like (Long id) {
+        Integer result = boardService.saveLike(id);
+        return result;
     } */
+    
+    @GetMapping("/excel/download")
+
+    public String boardExcel(HttpServletResponse response) throws IOException{
+        System.out.println(response);
+        boardService.excelDownload(response);
+		return null;
+    }
+
 }

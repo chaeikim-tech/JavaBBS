@@ -31,6 +31,9 @@ public class Board extends TimeStamp {
     @Column(name = "filepath")
     private String filepath;
 
+    /* @Column(name = "like")
+    private Integer like;
+ */
 
 
 

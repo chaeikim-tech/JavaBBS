@@ -2,23 +2,25 @@ package com.board.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import com.board.entity.Board;
 import com.board.repository.BoardRepository;
-
-import org.thymeleaf.util.StringUtils;
 
 @Service
 public class BoardService {
@@ -35,12 +37,12 @@ public class BoardService {
 
         return boardRepository.findAll();
     } */
-    public Page<Board> boardList(Pageable pageable,String searchText) {
+    public Page<Board> boardList(String title, String content, Pageable pageable) {
 
-        if(StringUtils.isEmpty(searchText)){
+        if(StringUtils.isEmpty(title) && StringUtils.isEmpty(content)){
             return boardRepository.findAll(pageable);
         } else {
-            return boardRepository.findByTitleContaining(pageable, searchText);
+            return boardRepository.findByTitleContainingOrContentContaining(title, content, pageable);
         }
     }
 
@@ -84,33 +86,59 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-
     // 특정 게시글 불러오기
     public Board boardView(Long id) {
         //BoardRepository.updateView(id); //조회수
         return boardRepository.findById(id).get();
     }
 
+/*     // 좋아요
+    public Integer saveLike(Long id) {
+        boardRepository.findByBoardEntity(id);
 
-   /*  @Transactional
-    public List<Board> searchPost(String keyword) {
-        List<Board> boardList = new ArrayList<>();
-
-        if(boardEntities.isEmpty()) return boardList;
-
-        for(Board boardEntity : boardEntities) {
-            boardList.add(this.convertEntityToDto(boardEntity));
-        }
-
-        return boardList;
+        return 0;
+    }
+ */
+    // Excel File
+    public void excelDownload(HttpServletResponse response) throws IOException {
+    
+        //Workbook wb = new HSSFWorkbook();
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("첫번째 시트");
+        Row row = null;
+        Cell cell = null;
+        int rowNum = 0;
+    
+         // Header
+         row = sheet.createRow(rowNum++);
+         cell = row.createCell(0);
+         cell.setCellValue("번호");
+         cell = row.createCell(1);
+         cell.setCellValue("이름");
+         cell = row.createCell(2);
+         cell.setCellValue("제목");
+     
+         // Body
+         for (int i=0; i<3; i++) {
+             row = sheet.createRow(rowNum++);
+             cell = row.createCell(0);
+             cell.setCellValue(i);
+             cell = row.createCell(1);
+             cell.setCellValue(i+"_name");
+             cell = row.createCell(2);
+             cell.setCellValue(i+"_title");
+         }
+    
+        //컨텐츠 타입과 파일명 지정
+        response.setContentType("ms-vnd/excel");
+       //response.setHeader("Content-Disposition", "attachment;filename=example.xls");
+        response.setHeader("Content-Disposition", "attachment;filename=example.xlsx");
+    
+        //Excel File Output
+        wb.write(response.getOutputStream());
+        wb.close();
     }
 
-    private Board convertEntityToDto(Board boardEntity) {
-        return Board.builder()
-                .id(boardEntity.getId())
-                .name(boardEntity.getName())
-                .title(boardEntity.getTitle())
-                .content(boardEntity.getContent())
-                .build();
-    } */
+
+ 
 }

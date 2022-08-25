@@ -50,16 +50,23 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>
+                        <input id="allCheck" type="checkbox" name="allCheck"  />
+                    </th>
                     <th>No</th>
                     <th>제목</th>
                     <th>내용</th>
                     <th>작성자</th>
                     <th>작성시간</th>
                     <th>조회 수</th>
+                    <th>좋아요</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="board : ${list}">
+                    <td>
+                        <input name="rowCheck" class="rowCheck" type="checkbox" id="${board.id}"/>
+                    </td>
                     <td th:text="${board.id}">1</td>
                     <td>
                         <a th:text="${board.title}" th:href="@{/view(id=${board.id})}"></a>
@@ -73,6 +80,12 @@
                 </tr>
             </tbody>
         </table>
+        <div>
+            <h1>Excel Download</h1>
+            <form action="/excel/download" method="GET">
+                <button type="submit">Excel</button>
+            </form>
+        </div>
         <div id="buttonContainer" >
             <a class="btn btn-primary" th:href="@{/write}" role="button">글쓰기</a>
         </div>
